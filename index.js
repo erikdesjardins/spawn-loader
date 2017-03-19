@@ -50,9 +50,12 @@ module.exports.pitch = function(request) {
 		this.parentCompilation.children.push(compilation);
 		Object.keys(compilation.assets).forEach(function(name) {
 			if (inert && name === placeholder) return;
-			this.parentCompilation.assets[path.join(outputDir, name)] = compilation.assets[name];
+			this.parentCompilation.assets[path.join(outputDir, name).replace(/\\/g, '/')] = compilation.assets[name];
 		}.bind(this));
 
-		callback(null, 'module.exports = __webpack_public_path__ + ' + JSON.stringify(path.join(outputDir, outputFilename)) + ';')
+		// normalize to unix paths, like some of Webpack's own loaders
+		// https://github.com/webpack-contrib/file-loader/blob/5d8f73ebe73fbff0f0dea2d57a01c9b2c69198c9/index.js#L30
+		// https://github.com/webpack/loader-utils/blob/07aea65f65877a67b15cbdef0d1f59af47628095/lib/interpolateName.js#L51-L54
+		callback(null, 'module.exports = __webpack_public_path__ + ' + JSON.stringify(path.join(outputDir, outputFilename).replace(/\\/g, '/')) + ';')
 	}.bind(compiler));
 };
