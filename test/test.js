@@ -37,9 +37,9 @@ test('basic usage', async t => {
 	const manifest = readFileSync(join(__dirname, 'dist/inertOut/manifest.json'), 'utf8');
 
 	t.regex(mainBundle, /"other\.entry\.spawned\.js"/, 'references spawned other entry');
-	t.regex(mainBundle, /"children(\/|\\\\)child1\.js"/, 'references spawned child1');
+	t.regex(mainBundle, /"children\/child1\.js"/, 'references spawned child1');
 	t.regex(mainBundle, /"defaults\.js"/, 'references spawned defaults');
-	t.regex(mainBundle, /"inertOut(\/|\\\\)manifest\.json"/, 'references spawned manifest.json');
+	t.regex(mainBundle, /"inertOut\/manifest\.json"/, 'references spawned manifest.json');
 	t.regex(mainBundle, /__webpack_require__\.p = ""/, 'publicPath is empty');
 
 	t.regex(otherEntry, /\bfunction __webpack_require__\b/, 'has prelude');
@@ -50,7 +50,7 @@ test('basic usage', async t => {
 
 	t.regex(child1, /\bfunction __webpack_require__\b/, 'has prelude');
 	t.regex(child1, /"hi\.jpg"/, 'references hi.jpg');
-	t.regex(child1, /"subchild(\/|\\\\)subchild\.js"/, 'references spawned subchild');
+	t.regex(child1, /"subchild\/subchild\.js"/, 'references spawned subchild');
 	t.regex(child1, /__webpack_require__\.p = ""/, 'publicPath is empty');
 
 	t.regex(subchild, /\bfunction __webpack_require__\b/, 'has prelude');
