@@ -34,6 +34,9 @@ module.exports.pitch = function(request) {
 	new SingleEntryPlugin(this.context, '!!' + request, debugName).apply(compiler);
 
 	// add a dependency on the entry point of the child compiler, so watch mode works
+	// ...this format is required for webpack 4
+	this.addDependency(request);
+	// ...and this format is required for webpack 5
 	this.addDependency(this.resourcePath);
 
 	// like compiler.runAsChild(), but remaps paths if necessary
